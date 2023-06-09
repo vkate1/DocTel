@@ -17,8 +17,9 @@ const ipfs = ipfsClient.create({
   host: "ipfs.infura.io",
   port: 5001,
   protocol: "https",
+  
 });
-
+const urlImage="https://img.freepik.com/premium-vector/form-doctor-prescription-purchase-medicines-pharmacy-with-pen-right_421321-227.jpg?w=2000"
 class TreatmentComp extends Component {
   constructor(props) {
     super(props);
@@ -55,26 +56,26 @@ class TreatmentComp extends Component {
   }
 
   uploadImage = (x) => {
-    console.log("Time start file to ipfs", Date.now());
-    console.log("Submitting file to ipfs...");
+    //console.log("Time start file to ipfs", Date.now());
+    //console.log("Submitting file to ipfs...");
     //adding file to the IPFS
     //console.log(this.state.buffer);
-    ipfs
-      .add(this.state.buffer, (error, result) => {
-        console.log("Ipfs result", result);
-        if (error) {
-          console.log("error");
-          console.error(error);
-          return;
-        }
-        console.log("complete");
-        this.setState({ loading: true });
-      })
-      .then((response) => {
-        console.log(response.path);
+   // ipfs
+      //.add(this.state.buffer, (error, result) => {
+       // console.log("Ipfs result", result);
+        //if (error) {
+          //console.log("error");
+          //console.error(error);
+         // return;
+       // }
+      //  console.log("complete");
+      //  this.setState({ loading: true });
+     // })
+      //.then((response) => {
+        console.log(urlImage);
         if (x == 1) {
           const res = this.props.contract.methods
-            .addPrescriptionTreat(this.state.treatId, response.path)
+            .addPrescriptionTreat(this.state.treatId, urlImage)
             .send({ from: this.props.accounts, gas: 1000000 })
             .on("transactionHash", (hash) => {
               this.setState({ loading: false });
@@ -82,14 +83,14 @@ class TreatmentComp extends Component {
             });
         } else if (x == 2) {
           const res = this.props.contract.methods
-            .addReportTreat(this.state.treatId, response.path)
+            .addReportTreat(this.state.treatId, urlImage)
             .send({ from: this.props.accounts, gas: 1000000 })
             .on("transactionHash", (hash) => {
               this.setState({ loading: false });
               console.log("Time end trans ended", Date.now());
             });
         }
-      });
+    //  });
     console.log("Time end file uploaded", Date.now());
   };
 
